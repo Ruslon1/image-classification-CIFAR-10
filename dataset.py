@@ -1,11 +1,17 @@
-import torchvision
 import torch
-import torchvision.transforms as transforms
+from torchvision import datasets, transforms
+from torch.utils.data import DataLoader
 
-transform = transforms.Compose([
-    transforms.ToTensor(),
-    transforms.Normalize((0.5,), (0.5,))
-])
+def get_dataloaders(batch_size=64):
+    transform = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+    ])
 
-train_dataset = torchvision.datasets.CIFAR10(root='./CIFAR-10', train=True, download=True)
-train_loader = torch.utils.data.DataLoader(dataset=train_dataset, batch_size=64, shuffle=True)
+    train_dataset = datasets.CIFAR10(root='./data', train=True, transform=transform, download=True)
+    test_dataset = datasets.CIFAR10(root='./data', train=False, transform=transform, download=True)
+
+    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+    test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
+
+    return train_loader, test_loader
