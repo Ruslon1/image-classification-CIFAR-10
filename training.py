@@ -4,7 +4,7 @@ import torch.optim as optim
 from cnn import CNN
 from dataset import get_dataloaders
 
-def train_model(epochs=20, batch_size=64, checkpoint_path='./model_checkpoint.pth'):
+def train_model(epochs=50, batch_size=64, checkpoint_path='./model_checkpoint.pth'):
     device = torch.device('cpu')
 
     train_loader, _ = get_dataloaders(batch_size)
@@ -33,3 +33,5 @@ def train_model(epochs=20, batch_size=64, checkpoint_path='./model_checkpoint.pt
 
     torch.save({'model_state_dict': model.state_dict()}, checkpoint_path)
     print(f"Model saved to {checkpoint_path}")
+
+train_model()
