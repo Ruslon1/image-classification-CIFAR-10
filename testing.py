@@ -1,6 +1,7 @@
 import torch
-import torchvision.transforms as transforms
+from torchvision import transforms
 from PIL import Image
+import matplotlib.pyplot as plt
 from cnn import CNN
 from dataset import get_dataloaders
 
@@ -38,6 +39,19 @@ def test_custom_image(image_path, checkpoint_path='./model_checkpoint.pth'):
 
     image = Image.open(image_path).convert('RGB')
     image = transform(image).unsqueeze(0)
+
+    # Display the image going into the model
+    # De-normalize the image for display
+    denormalize = transforms.Normalize(
+        mean=[-0.5 / 0.5, -0.5 / 0.5, -0.5 / 0.5],
+        std=[1 / 0.5, 1 / 0.5, 1 / 0.5]
+    )
+    image_for_display = denormalize(image[0]).clamp(0, 1).permute(1, 2, 0)  # Convert to HWC format
+
+    plt.imshow(image_for_display.cpu().numpy())
+    plt.title("Image Going Into Neural Network")
+    plt.axis('off')
+    plt.show()
 
     model = CNN().to(device)
     checkpoint = torch.load(checkpoint_path)
