@@ -1,10 +1,11 @@
 import torch
+import torchvision.transforms as transforms
+from PIL import Image
 from cnn import CNN
 from dataset import get_dataloaders
 
 def test_model(checkpoint_path='./model_checkpoint.pth', batch_size=64):
     device = torch.device('cpu')
-
     _, test_loader = get_dataloaders(batch_size)
 
     model = CNN().to(device)
@@ -26,4 +27,35 @@ def test_model(checkpoint_path='./model_checkpoint.pth', batch_size=64):
     accuracy = 100 * correct / total
     print(f"Test Accuracy: {accuracy:.2f}%")
 
+
+def test_custom_image(image_path, checkpoint_path='./model_checkpoint.pth'):
+    device = torch.device('cpu')
+    transform = transforms.Compose([
+        transforms.Resize((32, 32)),
+        transforms.ToTensor(),
+        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+    ])
+
+    image = Image.open(image_path).convert('RGB')
+    image = transform(image).unsqueeze(0)
+
+    model = CNN().to(device)
+    checkpoint = torch.load(checkpoint_path)
+    model.load_state_dict(checkpoint['model_state_dict'])
+    model.eval()
+
+    image = image.to(device)
+    with torch.no_grad():
+        outputs = model(image)
+        _, predicted = torch.max(outputs, 1)
+
+    class_names = [
+        "airplane", "automobile", "bird", "cat", "deer",
+        "dog", "frog", "horse", "ship", "truck"
+    ]
+
+    predicted_class = class_names[predicted.item()]
+    print(f"Predicted Class: {predicted_class}")
+
 test_model()
+test_custom_image('./image.jpg')

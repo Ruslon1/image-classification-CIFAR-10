@@ -22,7 +22,7 @@ def train_model(batch_size=64, checkpoint_path='./model_checkpoint.pth'):
         start_epoch = 0
 
 
-    for epoch in range(start_epoch, start_epoch + 2):
+    for epoch in range(start_epoch, start_epoch + 100):
         model.train()
         running_loss = 0.0
         for images, labels in train_loader:
