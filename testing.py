@@ -25,3 +25,5 @@ def test_model(checkpoint_path='./model_checkpoint.pth', batch_size=64):
 
     accuracy = 100 * correct / total
     print(f"Test Accuracy: {accuracy:.2f}%")
+
+test_model()
