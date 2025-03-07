@@ -1,11 +1,12 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import time
 import os
 from cnn import CNN
 from dataset import get_dataloaders
 
-def train_model(batch_size=4096, checkpoint_path='./model_checkpoint.pth'):
+def train_model(batch_size=1024, checkpoint_path='./model_checkpoint.pth'):
     device = torch.device('cuda')
 
     train_loader, _ = get_dataloaders(batch_size)
@@ -23,6 +24,8 @@ def train_model(batch_size=4096, checkpoint_path='./model_checkpoint.pth'):
 
 
     for epoch in range(start_epoch, start_epoch + 300):
+        start_time = time.time()
+
         model.train()
         running_loss = 0.0
         for images, labels in train_loader:
@@ -38,8 +41,10 @@ def train_model(batch_size=4096, checkpoint_path='./model_checkpoint.pth'):
             running_loss += loss.item()
 
         epoch_loss = running_loss / len(train_loader)
-        print(f"Epoch [{epoch+1}], Loss: {epoch_loss:.4f}")
+        end_time = time.time()
+        epoch_time = end_time - start_time
 
+        print(f"Epoch [{epoch+1}], Loss: {epoch_loss:.4f}, Time: {epoch_time:.2f} seconds")
         torch.save({
             'model_state_dict': model.state_dict(),
             'optimizer_state_dict': optimizer.state_dict(),
@@ -47,5 +52,5 @@ def train_model(batch_size=4096, checkpoint_path='./model_checkpoint.pth'):
             'loss': running_loss
         }, checkpoint_path)
         print(f"Model saved to {checkpoint_path}")
-
-train_model(checkpoint_path="./new_checkpoint")
+if __name__ == "__main__":
+    train_model(checkpoint_path="./new_checkpoint")
