@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from cnn import CNN
 from dataset import get_dataloaders
 
-def test_model(checkpoint_path='./model_checkpoint.pth', batch_size=64):
+def test_model(checkpoint_path='./model_checkpoint.pth', batch_size=2048):
     device = torch.device('cpu')
     _, test_loader = get_dataloaders(batch_size)
 
@@ -71,5 +71,5 @@ def test_custom_image(image_path, checkpoint_path='./model_checkpoint.pth'):
     predicted_class = class_names[predicted.item()]
     print(f"Predicted Class: {predicted_class}")
 
-#test_model()
+test_model(checkpoint_path="./new_checkpoint")
 test_custom_image('./image.jpg', checkpoint_path="./new_checkpoint")

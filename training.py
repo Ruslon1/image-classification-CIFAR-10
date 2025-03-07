@@ -5,8 +5,8 @@ import os
 from cnn import CNN
 from dataset import get_dataloaders
 
-def train_model(batch_size=64, checkpoint_path='./model_checkpoint.pth'):
-    device = torch.device('cpu')
+def train_model(batch_size=2048, checkpoint_path='./model_checkpoint.pth'):
+    device = torch.device('cuda')
 
     train_loader, _ = get_dataloaders(batch_size)
     model = CNN().to(device)
@@ -40,12 +40,12 @@ def train_model(batch_size=64, checkpoint_path='./model_checkpoint.pth'):
         epoch_loss = running_loss / len(train_loader)
         print(f"Epoch [{epoch+1}], Loss: {epoch_loss:.4f}")
 
-    torch.save({
-        'model_state_dict': model.state_dict(),
-        'optimizer_state_dict': optimizer.state_dict(),
-        'epoch': epoch,
-        'loss': running_loss
-    }, checkpoint_path)
-    print(f"Model saved to {checkpoint_path}")
+        torch.save({
+            'model_state_dict': model.state_dict(),
+            'optimizer_state_dict': optimizer.state_dict(),
+            'epoch': epoch,
+            'loss': running_loss
+        }, checkpoint_path)
+        print(f"Model saved to {checkpoint_path}")
 
 train_model(checkpoint_path="./new_checkpoint")
