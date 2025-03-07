@@ -72,4 +72,4 @@ def test_custom_image(image_path, checkpoint_path='./model_checkpoint.pth'):
     print(f"Predicted Class: {predicted_class}")
 
 #test_model()
-test_custom_image('./image.jpg')
+test_custom_image('./image.jpg', checkpoint_path="./new_checkpoint")

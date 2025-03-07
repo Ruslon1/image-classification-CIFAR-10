@@ -48,4 +48,4 @@ def train_model(batch_size=64, checkpoint_path='./model_checkpoint.pth'):
     }, checkpoint_path)
     print(f"Model saved to {checkpoint_path}")
 
-train_model()
+train_model(checkpoint_path="./new_checkpoint")
