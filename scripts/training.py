@@ -6,7 +6,7 @@ import os
 from cnn import CNN
 from dataset import get_dataloaders
 
-def train_model(batch_size=2048, checkpoint_path='./model_checkpoint.pth'):
+def train_model(batch_size=2048, checkpoint_path='../model_checkpoint.pth'):
     device = torch.device('cuda')
 
     train_loader, _ = get_dataloaders(batch_size)
@@ -53,4 +53,4 @@ def train_model(batch_size=2048, checkpoint_path='./model_checkpoint.pth'):
         }, checkpoint_path)
         print(f"Model saved to {checkpoint_path}")
 if __name__ == "__main__":
-    train_model(checkpoint_path="./new_checkpoint")
+    train_model(checkpoint_path="../new_checkpoint")
