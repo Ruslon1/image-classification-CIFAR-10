@@ -1,4 +1,5 @@
 import torch
+import argparse
 import torch.nn as nn
 import torch.optim as optim
 import time
@@ -53,4 +54,7 @@ def train_model(batch_size=2048, checkpoint_path='../model_checkpoint.pth'):
         }, checkpoint_path)
         print(f"Model saved to {checkpoint_path}")
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Train a CIFAR-10 model")
+    parser.add_argument("--checkpoint", type=str, required=True, help="Directory to save the checkpoint")
+    args = parser.parse_args()
     train_model(checkpoint_path="../new_checkpoint")
