@@ -7,7 +7,7 @@ import os
 from cnn import CNN
 from dataset import get_dataloaders
 
-def train_model(batch_size=2048, checkpoint_path='../model_checkpoint.pth'):
+def train_model(batch_size=1024, checkpoint_path='../model_checkpoint.pth'):
     device = torch.device('cuda')
 
     train_loader, _ = get_dataloaders(batch_size)
@@ -57,4 +57,5 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Train a CIFAR-10 model")
     parser.add_argument("--checkpoint", type=str, required=True, help="Directory to save the checkpoint")
     args = parser.parse_args()
-    train_model(checkpoint_path="../new_checkpoint")
+    print(args.checkpoint)
+    train_model(checkpoint_path=args.checkpoint)
