@@ -1,11 +1,12 @@
 import torch
+import argparse
 from torchvision import transforms
 from PIL import Image
 import matplotlib.pyplot as plt
 from cnn import CNN
 from dataset import get_dataloaders
 
-def test_model(checkpoint_path='../model_checkpoint.pth', batch_size=2048):
+def test_model(checkpoint_path='../model_checkpoint.pth', batch_size=1024):
     device = torch.device('cpu')
     _, test_loader = get_dataloaders(batch_size)
 
@@ -71,5 +72,8 @@ def test_custom_image(image_path, checkpoint_path='../model_checkpoint.pth'):
     predicted_class = class_names[predicted.item()]
     print(f"Predicted Class: {predicted_class}")
 
-test_model(checkpoint_path="../new_checkpoint")
-test_custom_image('../image.jpg', checkpoint_path="../new_checkpoint")
+parser = argparse.ArgumentParser(description="Train a CIFAR-10 model")
+parser.add_argument("--checkpoint", type=str, required=True, help="Directory to save the checkpoint")
+args = parser.parse_args()
+test_model(checkpoint_path=args.checkpoint)
+test_custom_image('../image.jpg', checkpoint_path=args.checkpoint)
